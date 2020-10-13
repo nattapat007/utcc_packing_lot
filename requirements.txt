@@ -1,0 +1,15 @@
+# Sort by a-z
+
+django==3.1.2
+django-crispy-forms==1.9.2
+django-environ==0.4.5
+django-extensions==3.0.9
+django-filter==2.3.0
+django-model-controller==0.4.0
+djangorestframework==3.11.1
+ipdb==0.13.4
+markdown==3.2.2
+pillow==7.2.0
+psycopg2==2.8.6
+psycopg2-binary==2.8.6
+pytz==2020.1
