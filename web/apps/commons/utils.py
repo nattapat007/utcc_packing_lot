@@ -4,6 +4,8 @@ from uuid import uuid4
 
 from django.utils.deconstruct import deconstructible
 
+EXCLUDE_MODEL_CONTROLLER_FIELDS = ('created_at', 'updated_at', 'created_user', 'updated_user')
+
 
 @deconstructible
 class RandomFileName(object):
