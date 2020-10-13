@@ -16,18 +16,12 @@ Including another URLconf
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path, include
-from rest_framework import routers
 
 from web import settings
-
-router = routers.DefaultRouter()
-
-# API URL should be sorted by name
-# Ex. router.register(r'users', UserViewSet, base_name='users')
 
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
     # path('api/', include('web.api_urls', namespace='api')),
-    # path('', include('web.web_urls'))
+    path('', include('web.web_urls'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

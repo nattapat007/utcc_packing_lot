@@ -43,7 +43,8 @@ INSTALLED_APPS = [
 ]
 
 LOCAL_APPS = [
-    'web.apps.user_profile'
+    'web.apps.authentications',
+    'web.apps.user_profile',
 ]
 
 THIRD_PARTY_APPS = [

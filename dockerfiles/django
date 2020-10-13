@@ -6,7 +6,10 @@ WORKDIR /code
 
 RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev jpeg-dev zlib-dev
 
-COPY requirements.txt /code/
+COPY requirements.txt .
 RUN pip install -r requirements.txt
 
-COPY . /code/
+COPY manage.py .
+COPY web ./web
+
+RUN mkdir media
