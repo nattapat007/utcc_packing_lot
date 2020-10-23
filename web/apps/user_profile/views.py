@@ -7,7 +7,7 @@ from django.views import generic
 from django.views.generic import TemplateView
 from django.views.generic.edit import BaseFormView
 
-from web.apps.user_profile.forms import CustomUserCreationForm, LoginForm
+from web.apps.user_profile.forms import CustomUserCreationForm, LoginForm, UserProfileUpdateForm
 from web.apps.user_profile.models import UserProfile
 
 
@@ -47,11 +47,15 @@ class LoginPageView(TemplateView, BaseFormView):
         return super(LoginPageView, self).form_valid(form)
 
 
-class ProfilePageView(generic.UpdateView):
+class UserProfileUpdateView(generic.UpdateView):
     model = UserProfile
-    fields = ["first_name"]
     success_url = reverse_lazy("home")
-    template_name = "profile.html"
+    template_name = "edit_profile.html"
+    form_class = UserProfileUpdateForm
+
+    def get_form_kwargs(self):
+        kwargs = super(UserProfileUpdateView, self).get_form_kwargs()
+        return kwargs
 
 
 def logout_view(request):

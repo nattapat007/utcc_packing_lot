@@ -5,8 +5,7 @@
     <h1>Homepage</h1>
     {% if user.is_authenticated %}
         <p>Hi {{ user.email }}!</p>
-        <a href="{% url 'profile' user.id %}">Profile</a></p>
-        <!-- <img class="profile" src="{% static 'profile_pics/dfp.png' %}"> -->
+        <a href="{% url 'update' user.profile.id %}">Profile</a></p>
         <p><a href="{% url 'logout' %}">Log Out</a></p>
     {% else %}
         <p>You are not logged in</p>

@@ -2,9 +2,9 @@ from crispy_forms.bootstrap import PrependedText
 from crispy_forms.helper import FormHelper
 from crispy_forms.layout import Layout, Submit
 from django import forms
-from django.contrib.auth import get_user_model, authenticate, login
-from django.contrib.auth.forms import UserChangeForm
+from django.contrib.auth import authenticate, login
 from django.utils.translation import ugettext_lazy as _
+from model_controller.forms import ModelControllerForm
 
 from web.apps.commons.forms import BaseForm
 from web.apps.commons.utils import EXCLUDE_COMMON_FIELDS
@@ -21,7 +21,7 @@ class CustomUserCreationForm(forms.ModelForm):
     username = forms.CharField(max_length=50, min_length=3, initial='')
     password = forms.CharField(widget=forms.PasswordInput(), initial='')
     email = forms.EmailField(required=True)
-    first_name = forms.CharField(required=True)
+    family_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
     phone = forms.CharField(min_length=10, max_length=10)
     image = forms.ImageField(label=_('Image'), required=False)
@@ -80,10 +80,23 @@ class LoginForm(BaseForm):
             login(request, user)
 
 
-class CustomUserChangeForm(UserChangeForm):
-    class Meta:
-        model = get_user_model()
-        fields = (
-            "email",
-            "username",
+class UserProfileUpdateForm(ModelControllerForm):
+    family_name = forms.CharField(required=False)
+    last_name = forms.CharField(required=False)
+    phone = forms.CharField(min_length=10, max_length=10, required=False)
+    image = forms.ImageField(label=_('Image'), required=False)
+
+    def __init__(self, *args, **kwargs):
+        super(UserProfileUpdateForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            'family_name',
+            'last_name',
+            'phone',
+            'image'
         )
+        self.helper.add_input(Submit('submit', _('Update'), css_class='btn btn-success'))
+
+    class Meta:
+        model = UserProfile
+        exclude = EXCLUDE_COMMON_FIELDS + ('user',)
