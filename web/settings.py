@@ -44,8 +44,10 @@ INSTALLED_APPS = [
 ]
 
 LOCAL_APPS = [
+    'web.apps.accounts',
     'web.apps.import_file',
     'web.apps.motorcycle',
+    'web.apps.pages',
     'web.apps.parking',
     'web.apps.user_profile',
 ]
