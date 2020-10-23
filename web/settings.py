@@ -150,3 +150,5 @@ REST_FRAMEWORK = {
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
     ]
 }
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'
