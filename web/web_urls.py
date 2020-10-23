@@ -1,7 +1,6 @@
 from django.urls import path, include
 
 urlpatterns = [
-    path('accounts/', include('django.contrib.auth.urls')),
-    path('accounts/', include('web.apps.accounts.urls')),
+    path('user_profile/', include('web.apps.user_profile.urls')),
     path('', include('web.apps.pages.urls')),
 ]
