@@ -12,5 +12,3 @@ sleep 10
 
 echo "# show logs"
 docker-compose logs -f
-
-#$SHELL
