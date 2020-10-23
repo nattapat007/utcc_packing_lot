@@ -1,15 +1,21 @@
 FROM python:3.8-alpine
 ENV PYTHONUNBUFFERED 1
 
+# Creating working directory
 RUN mkdir /code
 WORKDIR /code
 
+# Install OS Library for Python Package
 RUN apk update && apk add postgresql-dev gcc python3-dev musl-dev jpeg-dev zlib-dev
 
+# Copying requirements
 COPY requirements.txt .
 RUN pip install -r requirements.txt
 
+# Copying source
 COPY manage.py .
 COPY web ./web
 
+# Copy static files
+COPY staticfiles ./staticfiles
 RUN mkdir media
