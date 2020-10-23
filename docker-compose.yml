@@ -5,7 +5,7 @@ services:
     build:
       context: .
       dockerfile: dockerfiles/django
-    image: django:latest
+    image: utcc_packing_lot:latest
     stdin_open: true
     tty: true
     command: "python manage.py runserver 0.0.0.0:8000"
