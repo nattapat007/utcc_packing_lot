@@ -13,7 +13,7 @@
 ## เริ่มต้นโปรเจ็ค
  1. Start Server
     ```bash
-    bash backend_start.sh
+    bash bash/start_project.sh
     ```
 
  2. เข้าไปที่ http://localhost:8000
@@ -64,15 +64,11 @@
     ]
     ```
 
-3. ไฟล์ **urls.py** เอาไว้สำหรับใส่ url ที่ต้องการ
+3. ไฟล์ **web_urls.py** เอาไว้สำหรับใส่ url ที่ต้องการ
     ```python
-    # API URL should be sorted by name
-    # Ex. router.register(r'users', UserViewSet, base_name='users') ตรงนี้สามารถใส่ได้ เมื่อต้องการใช้งาน django rest framwork
-
     urlpatterns = [
-        path('admin/', admin.site.urls),
-        path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-        path('api/', include(router.urls)),
+        path('', include('web.apps.pages.urls')),
+        path('user_profile/', include('web.apps.user_profile.urls')),
     ]
     ```
 
