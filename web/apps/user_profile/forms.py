@@ -17,7 +17,7 @@ class UserProfileAdminForm(forms.ModelForm):
         fields = '__all__'
 
 
-class CustomUserCreationForm(forms.ModelForm):
+class UserProfileCreationForm(forms.ModelForm):
     username = forms.CharField(max_length=50, min_length=3, initial='')
     password = forms.CharField(widget=forms.PasswordInput(), initial='')
     email = forms.EmailField(required=True)
@@ -27,7 +27,7 @@ class CustomUserCreationForm(forms.ModelForm):
     image = forms.ImageField(label=_('Image'), required=False)
 
     def __init__(self, *args, **kwargs):
-        super(CustomUserCreationForm, self).__init__(*args, **kwargs)
+        super(UserProfileCreationForm, self).__init__(*args, **kwargs)
         self.helper = FormHelper(self)
         self.helper.layout = Layout(
             'username',
@@ -80,10 +80,10 @@ class LoginForm(BaseForm):
             login(request, user)
 
 
-class UserProfileUpdateForm(ModelControllerForm):
-    family_name = forms.CharField(required=False)
-    last_name = forms.CharField(required=False)
-    phone = forms.CharField(min_length=10, max_length=10, required=False)
+class UserProfileUpdateForm(forms.ModelForm):
+    family_name = forms.CharField(required=True)
+    last_name = forms.CharField(required=True)
+    phone = forms.CharField(min_length=10, max_length=10, required=True)
     image = forms.ImageField(label=_('Image'), required=False)
 
     def __init__(self, *args, **kwargs):

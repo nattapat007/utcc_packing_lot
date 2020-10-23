@@ -7,12 +7,12 @@ from django.views import generic
 from django.views.generic import TemplateView
 from django.views.generic.edit import BaseFormView
 
-from web.apps.user_profile.forms import CustomUserCreationForm, LoginForm, UserProfileUpdateForm
+from web.apps.user_profile.forms import UserProfileCreationForm, LoginForm, UserProfileUpdateForm
 from web.apps.user_profile.models import UserProfile
 
 
 class SignupPageView(generic.CreateView):
-    form_class = CustomUserCreationForm
+    form_class = UserProfileCreationForm
     success_url = reverse_lazy("login")
     template_name = "signup.html"
 
@@ -53,9 +53,16 @@ class UserProfileUpdateView(generic.UpdateView):
     template_name = "edit_profile.html"
     form_class = UserProfileUpdateForm
 
-    def get_form_kwargs(self):
-        kwargs = super(UserProfileUpdateView, self).get_form_kwargs()
-        return kwargs
+    def post(self, request, *args, **kwargs):
+        user_profile = UserProfile.objects.get(pk=kwargs['pk'])
+
+        user_profile.family_name = request.POST.get('family_name')
+        user_profile.last_name = request.POST.get('last_name')
+        user_profile.phone_number = request.POST.get('phone')
+        user_profile.image = request.FILES.get('image')
+
+        user_profile.save()
+        return redirect(self.success_url)
 
 
 def logout_view(request):
