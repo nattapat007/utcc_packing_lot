@@ -10,10 +10,10 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
+import os
 from pathlib import Path
 
 import environ
-import os
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
@@ -44,7 +44,6 @@ INSTALLED_APPS = [
 ]
 
 LOCAL_APPS = [
-    'web.apps.accounts',
     'web.apps.import_file',
     'web.apps.motorcycle',
     'web.apps.pages',
