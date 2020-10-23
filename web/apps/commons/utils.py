@@ -3,8 +3,9 @@ import time
 from uuid import uuid4
 
 from django.utils.deconstruct import deconstructible
+from model_controller.utils import EXCLUDE_MODEL_CONTROLLER_FIELDS
 
-EXCLUDE_MODEL_CONTROLLER_FIELDS = ('created_at', 'updated_at', 'created_user', 'updated_user')
+EXCLUDE_COMMON_FIELDS = EXCLUDE_MODEL_CONTROLLER_FIELDS + ('alive',)
 
 
 @deconstructible
