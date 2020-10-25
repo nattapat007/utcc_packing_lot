@@ -19,11 +19,11 @@
             {% for i in users_false %}
                 <th scope="row"><img src="http://localhost:8000/media/{{ i.image }}" class="rounded w-25">
                 </th>
-                <td>{{ i.family_name }}</td>
+                <td>{{ i.family_name }} {{ i.last_name }}</td>
                 <td>{{ i.line }}</td>
                 <td>{{ i.phone }}</td>
                 <td>
-                    <form action="{% url 'verify' i.id %}" method="POST">
+                    <form action="{% url 'verify' i.created_user_id %}" method="POST">
                         {% csrf_token %}
                         <input type="submit" class="btn btn-success" name="Confirm">
                     </form>

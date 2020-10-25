@@ -11,6 +11,8 @@ from web.apps.commons.utils import EXCLUDE_COMMON_FIELDS
 from web.apps.user_profile.models import UserProfile
 from web.apps.motorcycle.models import Brand
 
+from django.contrib.auth.models import User
+
 
 class UserProfileAdminForm(forms.ModelForm):
     class Meta:

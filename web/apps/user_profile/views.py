@@ -78,11 +78,13 @@ def verify_view(request):
 
 
 def verify_update(request, pk):
-    user = User.objects.filter(id=pk).update(is_active=True)
+    user = User.objects.filter(pk=pk)
+    print(user)
     if request.method == "POST":
-        user.is_active = True
-        user.save()
-        print("True")
+        for i in user:
+            i.is_active = True
+            i.save()
     else:
-        print("False")
+        print(user.is_active, pk)
+
     return redirect('user_verify')
