@@ -9,6 +9,7 @@ from model_controller.forms import ModelControllerForm
 from web.apps.commons.forms import BaseForm
 from web.apps.commons.utils import EXCLUDE_COMMON_FIELDS
 from web.apps.user_profile.models import UserProfile
+from web.apps.motorcycle.models import Brand
 
 
 class UserProfileAdminForm(forms.ModelForm):
@@ -36,7 +37,8 @@ class UserProfileCreationForm(forms.ModelForm):
             'family_name',
             'last_name',
             'phone',
-            'image'
+            'image',
+            'brand',
         )
         self.helper.add_input(Submit('submit', _('Sign Up'), css_class='btn btn-success'))
 

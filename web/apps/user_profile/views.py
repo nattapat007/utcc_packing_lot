@@ -1,7 +1,7 @@
 # Create your views here.
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
-from django.shortcuts import redirect
+from django.shortcuts import redirect, render
 from django.urls import reverse_lazy
 from django.views import generic
 from django.views.generic import TemplateView
@@ -20,8 +20,9 @@ class SignupPageView(generic.CreateView):
         username = request.POST.get('username')
         password = request.POST.get('password')
         email = request.POST.get('email')
+        is_active = False
 
-        user = User.objects.create_user(username=username, password=password, email=email)
+        user = User.objects.create_user(username=username, password=password, email=email, is_active=is_active)
 
         data = {
             'user': user,
@@ -69,3 +70,19 @@ def logout_view(request):
     logout(request)
     response = redirect(reverse_lazy('login'))
     return response
+
+
+def verify_view(request):
+    users_false = UserProfile.objects.filter(user__is_active=False)
+    return render(request, 'user_verify.html', {'users_false': users_false})
+
+
+def verify_update(request, pk):
+    user = User.objects.filter(id=pk).update(is_active=True)
+    if request.method == "POST":
+        user.is_active = True
+        user.save()
+        print("True")
+    else:
+        print("False")
+    return redirect('user_verify')

@@ -1,0 +1,35 @@
+{% extends '_base.html' %}
+{% load crispy_forms_tags %}
+{% block title %}Verify{% endblock title %}
+{% block content %}
+    <h2>Verify</h2>
+    {% if user.is_authenticated %}
+        <table class="table">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Image</th>
+            <th scope="col">Name</th>
+            <th scope="col">License Plate</th>
+            <th scope="col">Motorcycle</th>
+            <th scope="col">Action</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr>
+            {% for i in users_false %}
+                <th scope="row"><img src="http://localhost:8000/media/{{ i.image }}" class="rounded w-25">
+                </th>
+                <td>{{ i.family_name }}</td>
+                <td>{{ i.line }}</td>
+                <td>{{ i.phone }}</td>
+                <td>
+                    <form action="{% url 'verify' i.id %}" method="POST">
+                        {% csrf_token %}
+                        <input type="submit" class="btn btn-success" name="Confirm">
+                    </form>
+                </td>
+                </tr>
+            {% endfor %}
+    {% else %}
+    {% endif %}
+{% endblock content %}
