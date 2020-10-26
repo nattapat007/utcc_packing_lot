@@ -16,4 +16,4 @@ class Park(AbstractModelController):
         verbose_name_plural = 'Parks'
 
     def __str__(self):
-        return f'{self.motorcycle}'
+        return f'{self.motorcycle}, {self.user}'

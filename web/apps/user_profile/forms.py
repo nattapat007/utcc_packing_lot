@@ -9,6 +9,9 @@ from model_controller.forms import ModelControllerForm
 from web.apps.commons.forms import BaseForm
 from web.apps.commons.utils import EXCLUDE_COMMON_FIELDS
 from web.apps.user_profile.models import UserProfile
+from web.apps.motorcycle.models import Brand, Model
+
+from django.contrib.auth.models import User
 
 
 class UserProfileAdminForm(forms.ModelForm):
@@ -25,6 +28,10 @@ class UserProfileCreationForm(forms.ModelForm):
     last_name = forms.CharField(required=True)
     phone = forms.CharField(min_length=10, max_length=10)
     image = forms.ImageField(label=_('Image'), required=False)
+    plate = forms.CharField(required=True)
+    brand = forms.ModelChoiceField(queryset=Brand.objects.all(), required=True, empty_label="Other")
+    model = forms.ModelChoiceField(queryset=Model.objects.all(), required=True, empty_label="Other")
+    color = forms.CharField(required=True)
 
     def __init__(self, *args, **kwargs):
         super(UserProfileCreationForm, self).__init__(*args, **kwargs)
@@ -36,7 +43,11 @@ class UserProfileCreationForm(forms.ModelForm):
             'family_name',
             'last_name',
             'phone',
-            'image'
+            'image',
+            'plate',
+            'brand',
+            'model',
+            'color',
         )
         self.helper.add_input(Submit('submit', _('Sign Up'), css_class='btn btn-success'))
 
@@ -83,8 +94,11 @@ class LoginForm(BaseForm):
 class UserProfileUpdateForm(forms.ModelForm):
     family_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
-    phone = forms.CharField(min_length=10, max_length=10, required=True)
+    phone = forms.CharField(min_length=10, max_length=10)
     image = forms.ImageField(label=_('Image'), required=False)
+    brand = forms.ModelChoiceField(queryset=Brand.objects.all(), required=True, empty_label="Other")
+    model = forms.ModelChoiceField(queryset=Model.objects.all(), required=True, empty_label="Other")
+    color = forms.CharField()
 
     def __init__(self, *args, **kwargs):
         super(UserProfileUpdateForm, self).__init__(*args, **kwargs)
@@ -93,7 +107,10 @@ class UserProfileUpdateForm(forms.ModelForm):
             'family_name',
             'last_name',
             'phone',
-            'image'
+            'image',
+            'brand',
+            'model',
+            'color',
         )
         self.helper.add_input(Submit('submit', _('Update'), css_class='btn btn-success'))
 
