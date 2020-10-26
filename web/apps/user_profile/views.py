@@ -21,12 +21,14 @@ class SignupPageView(generic.CreateView):
         username = request.POST.get('username')
         password = request.POST.get('password')
         email = request.POST.get('email')
-        brand = request.POST.get('brand')
-        model = request.POST.get('model')
-        color = request.POST.get('color')
-        is_active = False
 
-        user = User.objects.create_user(username=username, password=password, email=email, is_active=is_active)
+        user_data = {
+            'username': username,
+            'password': password,
+            'email': email,
+            'is_active': False
+        }
+        user = User.objects.create_user(**user_data)
 
         profile_data = {
             'user': user,
@@ -51,7 +53,6 @@ class SignupPageView(generic.CreateView):
             'created_user': user,
             'updated_user': user,
         }
-
         Motorcycle.objects.create(**motorcycle_data)
 
         return redirect(self.success_url)
