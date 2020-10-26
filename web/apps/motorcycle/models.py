@@ -2,6 +2,7 @@ from django.db import models
 
 # Create your models here.
 from model_controller.models import AbstractModelController
+from web.apps.user_profile.models import UserProfile
 
 
 class Brand(AbstractModelController):
@@ -34,6 +35,8 @@ class Motorcycle(AbstractModelController):
                               null=True, blank=True)
     color = models.CharField(max_length=100, db_index=True)
     plate = models.CharField(max_length=100, db_index=True)
+
+    # user_id = models.OneToOneField(UserProfile, related_name='motorcycle', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Motorcycle'

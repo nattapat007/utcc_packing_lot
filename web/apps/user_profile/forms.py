@@ -92,8 +92,11 @@ class LoginForm(BaseForm):
 class UserProfileUpdateForm(forms.ModelForm):
     family_name = forms.CharField(required=True)
     last_name = forms.CharField(required=True)
-    phone = forms.CharField(min_length=10, max_length=10, required=True)
+    phone = forms.CharField(min_length=10, max_length=10)
     image = forms.ImageField(label=_('Image'), required=False)
+    brand = forms.ModelChoiceField(queryset=Brand.objects.all(), required=True, empty_label="Other")
+    model = forms.ModelChoiceField(queryset=Model.objects.all(), required=True, empty_label="Other")
+    color = forms.CharField()
 
     def __init__(self, *args, **kwargs):
         super(UserProfileUpdateForm, self).__init__(*args, **kwargs)
@@ -102,7 +105,10 @@ class UserProfileUpdateForm(forms.ModelForm):
             'family_name',
             'last_name',
             'phone',
-            'image'
+            'image',
+            'brand',
+            'model',
+            'color',
         )
         self.helper.add_input(Submit('submit', _('Update'), css_class='btn btn-success'))
 
