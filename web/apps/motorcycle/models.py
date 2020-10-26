@@ -2,7 +2,7 @@ from django.db import models
 
 # Create your models here.
 from model_controller.models import AbstractModelController
-from web.apps.user_profile.models import UserProfile
+from django.contrib.auth.models import User
 
 
 class Brand(AbstractModelController):
@@ -29,14 +29,13 @@ class Model(AbstractModelController):
 
 
 class Motorcycle(AbstractModelController):
+    user_id = models.OneToOneField(User, related_name='motorcycle', on_delete=models.CASCADE, )
     brand = models.ForeignKey(Brand, related_name='motorcycle_brand', db_index=True, on_delete=models.SET_NULL,
                               null=True, blank=True)
     model = models.ForeignKey(Model, related_name='motorcycle_model', db_index=True, on_delete=models.SET_NULL,
                               null=True, blank=True)
     color = models.CharField(max_length=100, db_index=True)
     plate = models.CharField(max_length=100, db_index=True)
-
-    # user_id = models.OneToOneField(UserProfile, related_name='motorcycle', on_delete=models.CASCADE)
 
     class Meta:
         verbose_name = 'Motorcycle'
