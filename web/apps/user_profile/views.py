@@ -35,7 +35,7 @@ class SignupPageView(generic.CreateView):
             'family_name': request.POST.get('family_name'),
             'last_name': request.POST.get('last_name'),
             'phone_number': request.POST.get('phone'),
-            'image': request.FILES.get('image')
+            'image': request.FILES.get('image'),
         }
         user_profile = UserProfile.objects.create(**profile_data)
 
@@ -47,7 +47,9 @@ class SignupPageView(generic.CreateView):
             'brand': brand,
             'model': model,
             'color': request.POST.get('color'),
-            # 'plate': request.POST.get('') #Plase Add plate!!!
+            'plate': request.POST.get('plate'),
+            'created_user': user,
+            'updated_user': user,
         }
 
         Motorcycle.objects.create(**motorcycle_data)
@@ -73,11 +75,11 @@ class UserProfileUpdateView(generic.UpdateView):
 
     def post(self, request, *args, **kwargs):
         user_profile = UserProfile.objects.get(pk=kwargs['pk'])
-
         user_profile.family_name = request.POST.get('family_name')
         user_profile.last_name = request.POST.get('last_name')
         user_profile.phone_number = request.POST.get('phone')
-        user_profile.image = request.FILES.get('image')
+        user_profile.image = request.FILES.get('image') if request.FILES.get(
+            'image') != '' else user_profile.image
 
         user_profile.save()
         return redirect(self.success_url)
@@ -90,18 +92,18 @@ def logout_view(request):
 
 
 def verify_view(request):
-    users_false = UserProfile.objects.filter(user__is_active=False)
+    users_false = Motorcycle.objects.filter(profile__user__is_active=False, profile__user__is_superuser=False)
     return render(request, 'user_verify.html', {'users_false': users_false})
 
 
 def verify_update(request, pk):
-    user = User.objects.get(pk=pk)
-    print(user)
+    users = User.objects.filter(pk=pk)
+    print(users)
     if request.method == "POST":
-        for i in user:
-            i.is_active = True
-            i.save()
+        for user in users:
+            user.is_active = True
+            user.save()
     else:
-        print(user.is_active, pk)
+        print(users.is_active, pk)
 
     return redirect('user_verify')

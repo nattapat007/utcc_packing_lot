@@ -16,17 +16,19 @@
         </thead>
         <tbody>
         <tr>
-            {% for i in users_false %}
-                <th scope="row"><img src="http://localhost:8000/media/{{ i.image }}" class="rounded w-25">
+            {% for page in users_false %}
+                <th scope="row"><img src="http://localhost:8000/media/{{ page.profile.image }}" class="rounded w-25">
                 </th>
-                <td>{{ i.family_name }} {{ i.last_name }}</td>
-                <td>{{ i.line }}</td>
-                <td>{{ i.phone }}</td>
+                <td>{{ page.profile.family_name }} {{ page.profile.last_name }}</td>
+                <td>{{ page.plate }}</td>
+                <td>{{ page.brand }} {{ page.model }}</td>
                 <td>
-                    <form action="{% url 'verify' i.created_user_id %}" method="POST">
-                        {% csrf_token %}
-                        <input type="submit" class="btn btn-success" name="Confirm">
-                    </form>
+                    {% if user.is_superuser %}
+                        <form action="{% url 'verify' page.profile.user_id %}" method="POST">
+                            {% csrf_token %}
+                            <input type="submit" class="btn btn-success" name="Confirm">
+                        </form>
+                    {% endif %}
                 </td>
                 </tr>
             {% endfor %}

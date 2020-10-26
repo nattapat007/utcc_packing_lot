@@ -28,6 +28,7 @@ class UserProfileCreationForm(forms.ModelForm):
     last_name = forms.CharField(required=True)
     phone = forms.CharField(min_length=10, max_length=10)
     image = forms.ImageField(label=_('Image'), required=False)
+    plate = forms.CharField(required=True)
     brand = forms.ModelChoiceField(queryset=Brand.objects.all(), required=True, empty_label="Other")
     model = forms.ModelChoiceField(queryset=Model.objects.all(), required=True, empty_label="Other")
     color = forms.CharField(required=True)
@@ -43,9 +44,10 @@ class UserProfileCreationForm(forms.ModelForm):
             'last_name',
             'phone',
             'image',
+            'plate',
             'brand',
             'model',
-            'color'
+            'color',
         )
         self.helper.add_input(Submit('submit', _('Sign Up'), css_class='btn btn-success'))
 
