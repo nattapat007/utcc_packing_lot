@@ -9,6 +9,7 @@ from django.views.generic.edit import BaseFormView
 
 from web.apps.user_profile.forms import UserProfileCreationForm, LoginForm, UserProfileUpdateForm
 from web.apps.user_profile.models import UserProfile
+from web.apps.motorcycle.models import Motorcycle
 
 
 class SignupPageView(generic.CreateView):
@@ -20,9 +21,13 @@ class SignupPageView(generic.CreateView):
         username = request.POST.get('username')
         password = request.POST.get('password')
         email = request.POST.get('email')
+        brand = request.POST.get('brand')
+        model = request.POST.get('model')
+        color = request.POST.get('color')
         is_active = False
 
         user = User.objects.create_user(username=username, password=password, email=email, is_active=is_active)
+        motor = Motorcycle.objects.create(brand=brand, model=model, color=color, )
 
         data = {
             'user': user,
@@ -78,7 +83,7 @@ def verify_view(request):
 
 
 def verify_update(request, pk):
-    user = User.objects.filter(pk=pk)
+    user = User.objects.get(pk=pk)
     print(user)
     if request.method == "POST":
         for i in user:
