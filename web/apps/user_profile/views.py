@@ -9,7 +9,7 @@ from django.views.generic.edit import BaseFormView
 
 from web.apps.user_profile.forms import UserProfileCreationForm, LoginForm, UserProfileUpdateForm
 from web.apps.user_profile.models import UserProfile
-from web.apps.motorcycle.models import Motorcycle
+from web.apps.motorcycle.models import Motorcycle, Brand, Model
 
 
 class SignupPageView(generic.CreateView):
@@ -27,9 +27,8 @@ class SignupPageView(generic.CreateView):
         is_active = False
 
         user = User.objects.create_user(username=username, password=password, email=email, is_active=is_active)
-        motor = Motorcycle.objects.create(brand=brand, model=model, color=color, )
 
-        data = {
+        profile_data = {
             'user': user,
             'created_user': user,
             'updated_user': user,
@@ -38,8 +37,21 @@ class SignupPageView(generic.CreateView):
             'phone_number': request.POST.get('phone'),
             'image': request.FILES.get('image')
         }
+        user_profile = UserProfile.objects.create(**profile_data)
 
-        UserProfile.objects.create(**data)
+        brand = Brand.objects.get(pk=request.POST.get('brand'))
+        model = Model.objects.get(pk=request.POST.get('model'))
+
+        motorcycle_data = {
+            'profile': user_profile,
+            'brand': brand,
+            'model': model,
+            'color': request.POST.get('color'),
+            # 'plate': request.POST.get('') #Plase Add plate!!!
+        }
+
+        Motorcycle.objects.create(**motorcycle_data)
+
         return redirect(self.success_url)
 
 
