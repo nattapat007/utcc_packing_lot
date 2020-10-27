@@ -18,14 +18,10 @@ class SignupPageView(generic.CreateView):
     template_name = "signup.html"
 
     def post(self, request, *args, **kwargs):
-        username = request.POST.get('username')
-        password = request.POST.get('password')
-        email = request.POST.get('email')
-
         user_data = {
-            'username': username,
-            'password': password,
-            'email': email,
+            'username': request.POST.get('username'),
+            'password': request.POST.get('password'),
+            'email': request.POST.get('email'),
             'is_active': False
         }
         user = User.objects.create_user(**user_data)
