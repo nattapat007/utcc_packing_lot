@@ -1,6 +1,5 @@
 from django.contrib.auth.models import User
 from django.db import models
-
 # Create your models here.
 from model_controller.models import AbstractModelController
 
@@ -20,3 +19,15 @@ class UserProfile(AbstractModelController):
 
     def __str__(self):
         return f'{self.user}'
+
+
+class UserMultipleImages(AbstractModelController):
+    user_profile = models.ForeignKey(UserProfile, related_name='multiple_image', on_delete=models.CASCADE)
+    image = models.ImageField(upload_to=RandomFileName('upload/user_multiple_img'))
+
+    class Meta:
+        verbose_name = 'User Multiple Image'
+        verbose_name_plural = 'User Multiple Images'
+
+    def __str__(self):
+        return f'{self.user_profile}'

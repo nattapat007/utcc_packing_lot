@@ -1,4 +1,6 @@
 # Create your views here.
+import logging
+
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
@@ -7,9 +9,12 @@ from django.views import generic
 from django.views.generic import TemplateView
 from django.views.generic.edit import BaseFormView
 
-from web.apps.user_profile.forms import UserProfileCreationForm, LoginForm, UserProfileUpdateForm
-from web.apps.user_profile.models import UserProfile
 from web.apps.motorcycle.models import Motorcycle, Brand, Model
+from web.apps.user_profile.forms import UserProfileCreationForm, LoginForm, UserProfileUpdateForm, \
+    UserMultipleUploadImagesForm
+from web.apps.user_profile.models import UserProfile, UserMultipleImages
+
+logger = logging.getLogger('django')
 
 
 class SignupPageView(generic.CreateView):
@@ -94,13 +99,35 @@ def verify_view(request):
 
 
 def verify_update(request, pk):
-    users = User.objects.filter(pk=pk)
-    print(users)
+    user = User.objects.get(pk=pk)
+    logger.info(f'User: {user}')
     if request.method == "POST":
-        for user in users:
-            user.is_active = True
-            user.save()
+        user.is_active = True
+        user.save()
     else:
-        print(users.is_active, pk)
+        logger.info(f'ID: {pk} active {user.is_active}')
 
     return redirect('user_verify')
+
+
+class UserMultipleUploadImagesView(generic.CreateView):
+    form_class = UserMultipleUploadImagesForm
+    success_url = reverse_lazy("home")
+    template_name = "multiple_upload.html"
+
+    def post(self, request, *args, **kwargs):
+        user = User.objects.get(pk=request.user.id)
+        user_profile = UserProfile.objects.get(pk=kwargs.get('pk'))
+
+        image_bulk_create = []
+        image_list = request.FILES.getlist('image')
+        for image in image_list:
+            image_bulk_create.append(
+                UserMultipleImages(image=image,
+                                   user_profile=user_profile,
+                                   created_user=user,
+                                   updated_user=user
+                                   )
+            )
+        UserMultipleImages.objects.bulk_create(image_bulk_create)
+        return redirect(self.success_url)

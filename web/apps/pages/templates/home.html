@@ -7,7 +7,8 @@
     
         <img src="http://localhost:8000/media/{{ user.profile.image }}" class="rounded w-25" alt="...">
         <p>Hi {{ user.profile.family_name }}!</p>
-        <a href="{% url 'update' user.profile.id %}">Profile</a></p>
+        <a href="{% url 'update' user.profile.id %}">Profile</a>
+        <a href="{% url 'multiple_image_upload' user.profile.id %}">Multiple Image Upload</a>
         {% comment %} <p><a href="{% url 'logout' %}">Log Out</a></p> {% endcomment %}
 
     {% else %}

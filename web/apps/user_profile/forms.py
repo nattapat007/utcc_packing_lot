@@ -8,7 +8,7 @@ from model_controller.forms import ModelControllerForm
 
 from web.apps.commons.forms import BaseForm
 from web.apps.commons.utils import EXCLUDE_COMMON_FIELDS
-from web.apps.user_profile.models import UserProfile
+from web.apps.user_profile.models import UserProfile, UserMultipleImages
 from web.apps.motorcycle.models import Brand, Model
 
 from django.contrib.auth.models import User
@@ -117,3 +117,19 @@ class UserProfileUpdateForm(forms.ModelForm):
     class Meta:
         model = UserProfile
         exclude = EXCLUDE_COMMON_FIELDS + ('user',)
+
+
+class UserMultipleUploadImagesForm(forms.ModelForm):
+    image = forms.ImageField(label=_('Image'), required=True, widget=forms.ClearableFileInput(attrs={'multiple': True}))
+
+    def __init__(self, *args, **kwargs):
+        super(UserMultipleUploadImagesForm, self).__init__(*args, **kwargs)
+        self.helper = FormHelper(self)
+        self.helper.layout = Layout(
+            'image',
+        )
+        self.helper.add_input(Submit('submit', _('Update'), css_class='btn btn-success'))
+
+    class Meta:
+        model = UserMultipleImages
+        exclude = EXCLUDE_COMMON_FIELDS + ('user_profile',)
