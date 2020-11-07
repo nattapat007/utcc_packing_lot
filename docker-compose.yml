@@ -27,7 +27,8 @@ services:
       - POSTGRES_USER=postgres
       - POSTGRES_PASSWORD=postgres
     volumes:
-      - postgres:/var/lib/postgresql/data
+#      - postgres:/var/lib/postgresql/data #!!run it on windows
+      - ./docker_volumes/postgres:/var/lib/postgresql/data #for linux or mac
 
 volumes:
   postgres:
