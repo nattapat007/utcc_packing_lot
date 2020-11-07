@@ -44,6 +44,7 @@ INSTALLED_APPS = [
 ]
 
 LOCAL_APPS = [
+    'web.apps.checkinout',
     'web.apps.import_file',
     'web.apps.motorcycle',
     'web.apps.pages',
