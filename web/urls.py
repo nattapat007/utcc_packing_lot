@@ -22,6 +22,14 @@ from web import settings
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls', namespace='rest_framework')),
-    # path('api/', include('web.api_urls', namespace='api')),
-    path('', include('web.web_urls'))
+    path('api/', include('web.api_urls', namespace='api')),
+    path('', include('web.web_urls')),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+if settings.DEBUG or settings.TESTING:
+    import debug_toolbar
+
+    urlpatterns += [
+        # debug toolbar
+        path('__debug__/', include(debug_toolbar.urls)),
+    ]

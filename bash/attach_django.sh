@@ -1,0 +1,1 @@
+docker attach $(docker-compose ps -q django)
