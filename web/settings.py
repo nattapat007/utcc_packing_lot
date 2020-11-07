@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 
 import os
+import socket
 from pathlib import Path
 
 import environ
@@ -27,7 +28,8 @@ env = environ.Env()
 SECRET_KEY = 'chpp9y*5dmrd(&-edzl^fgg8l9um%%y6bur!7d)$$9gm_p&p27'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = env.bool('DEBUG')
+DEBUG = env.bool('DEBUG', default=True)
+LOCAL = env.bool('LOCAL_DEVELOPMENT', default=True)
 
 ALLOWED_HOSTS = ['*']
 
@@ -56,6 +58,7 @@ THIRD_PARTY_APPS = [
     'crispy_forms',
     'django_filters',
     'rest_framework',
+    'debug_toolbar',
 ]
 
 INSTALLED_APPS += LOCAL_APPS + THIRD_PARTY_APPS
@@ -68,6 +71,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 ]
 
 ROOT_URLCONF = 'web.urls'
@@ -148,7 +152,16 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 40,
 }
 
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# Fixing Django debug toolbar not displaying in docker
+if LOCAL:
+    hostname, _, ips = socket.gethostbyname_ex(socket.gethostname())
+    INTERNAL_IPS = [ip[:-1] + '1' for ip in ips] + ['127.0.0.1', '10.0.2.2']
+else:
+    INTERNAL_IPS = env.list('DJANGO_INTERNAL_IPS')
