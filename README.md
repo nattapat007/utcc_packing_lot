@@ -7,16 +7,27 @@
 ## เริ่มต้นโปรเจ็ค (ครั้งแรก)
  1. Build docker images
     ```bash
-    docker-compose build --no-cache
+    make build
     ```
 
 ## เริ่มต้นโปรเจ็ค
  1. Start Server
     ```bash
-    bash bash/start_project.sh
+    make up
     ```
-
- 2. เข้าไปที่ http://localhost:8000
+ 2. Migrate
+    ```bash
+    make migrate
+    ```
+ 3. Make migrations
+    ```bash
+    make mgs
+    ```
+ 4. Create superuser
+    ```bash
+    make superuser
+    ```
+ 5. เข้าไปที่ http://localhost:8000
 
 ## docker-compose command ที่ใช้
 ```bash 
