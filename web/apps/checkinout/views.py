@@ -10,6 +10,7 @@ from rest_framework.response import Response
 from web.apps.checkinout.models import CheckIn, CheckOut
 from web.apps.checkinout.serializers import CheckInSerializer, CheckOutSerializer
 from web.apps.commons.choices import InOutStatus
+from web.apps.motorcycle.models import Motorcycle
 from web.apps.parking.models import Park
 from web.apps.user_profile.models import UserProfile
 
@@ -44,7 +45,7 @@ def find_matches_image_between_user(basename, query_data):
         if matches[best_match_index]:
             user_id = know_face_id[best_match_index]
 
-            user_profile = user_profiles.filter(user_id=user_id)
+            user_profile = user_profiles.get(user_id=user_id)
 
             if basename == 'checkin':
                 create_check_in_out = CheckIn.objects.create(face_login=query_data)
@@ -82,7 +83,7 @@ def find_matches_image_between_user(basename, query_data):
 
 
 class CheckInViewSet(viewsets.ModelViewSet):
-    queryset = CheckIn.objects.all()
+    queryset = CheckIn.objects.prefetch_related('park_set', 'park_set__motorcycle')
     serializer_class = CheckInSerializer
     permission_classes = (AllowAny,)
 
