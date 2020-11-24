@@ -10,7 +10,7 @@ from web.apps.user_profile.models import UserProfile
 
 
 class Park(AbstractModelController):
-    user = models.ForeignKey(UserProfile, on_delete=models.CASCADE, db_index=True)
+    user = models.ForeignKey(UserProfile, related_name='parking', on_delete=models.CASCADE, db_index=True)
     motorcycle = models.ForeignKey(Motorcycle, on_delete=models.CASCADE, db_index=True)
     status = models.IntegerField(choices=InOutStatus.choices, default=InOutStatus.CHECKIN, db_index=True)
     checkin = models.ForeignKey(CheckIn, on_delete=models.CASCADE, blank=True, null=True)

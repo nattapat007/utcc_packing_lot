@@ -2,11 +2,13 @@ import logging
 from datetime import datetime
 
 import face_recognition
+import ipdb
 import numpy as np
 from rest_framework import viewsets, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
+from web.apps.motorcycle.models import Motorcycle
 from web.apps.checkinout.models import CheckIn, CheckOut
 from web.apps.checkinout.serializers import CheckInSerializer, CheckOutSerializer
 from web.apps.commons.choices import InOutStatus
@@ -16,7 +18,7 @@ from web.apps.user_profile.models import UserProfile
 log = logging.getLogger(__name__)
 
 
-def find_matches_image_between_user(basename, query_data):
+def find_matches_image_between_user(basename, image, plate):
     user_profiles = UserProfile.objects.all()
 
     know_face_id = []
@@ -28,7 +30,7 @@ def find_matches_image_between_user(basename, query_data):
             face_recognition.face_encodings(face_recognition.load_image_file('/code/media/' + user_profile['image']),
                                             model='cnn')[0])
 
-    unknown_image = face_recognition.load_image_file(query_data)
+    unknown_image = face_recognition.load_image_file(image)
     face_locations = face_recognition.face_locations(unknown_image)
     face_encodings = face_recognition.face_encodings(unknown_image)
 
@@ -44,35 +46,40 @@ def find_matches_image_between_user(basename, query_data):
         if matches[best_match_index]:
             user_id = know_face_id[best_match_index]
 
-            user_profile = user_profiles.filter(user_id=user_id)
+            user_profile = user_profiles.get(user_id=user_id)
+            motorcycle = Motorcycle.objects.get(plate=plate)
+            # motorcycle = Motorcycle.objects.get(profile=user_profile)
 
-            if basename == 'checkin':
-                create_check_in_out = CheckIn.objects.create(face_login=query_data)
+            if basename == 'checkin' and user_profile.id == motorcycle.profile_id:
+                create_check_in_out = CheckIn.objects.create(face_login=image, plate=plate)
 
                 Park.objects.create(
                     user=user_profile,
-                    motorcycle='',
+                    motorcycle=motorcycle,
                     status=InOutStatus.CHECKIN,
                     checkin=create_check_in_out,
-                    created_user=user_profile,
+                    created_user=user_profile.user,
+                    updated_user=user_profile.user
                 )
-            elif basename == 'checkout':
-                create_check_in_out = CheckIn.objects.create(face_login=query_data)
+
+            elif basename == 'checkout' and user_profile.id == motorcycle.profile_id:
+                create_check_in_out = CheckOut.objects.create(face_logout=image, plate=plate)
 
                 now = datetime.now()
                 start_date = now.replace(hour=0, minute=0, second=0)
                 end_date = now.replace(hour=23, minute=59, second=59)
 
                 park = Park.objects.filter(user=user_profile,
+                                           motorcycle=motorcycle,
                                            created_at__range=(start_date, end_date),
                                            status=InOutStatus.CHECKIN,
                                            checkin__isnull=False,
-                                           checkout__isnull=True)
+                                           checkout__isnull=True).last()
 
                 park.status = InOutStatus.CHECKOUT
                 park.checkout = create_check_in_out
-                park.updated_user = user_profile
-                park.save()
+                park.updated_user = user_profile.user
+                park.save(update_fields=['status', 'checkout', 'updated_user'])
 
             log.info(f'{user_profile}, {create_check_in_out}')
             return user_profile, create_check_in_out
@@ -87,7 +94,8 @@ class CheckInViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
 
     def create(self, request, *args, **kwargs):
-        user_profile, check_in = find_matches_image_between_user(self.basename, request.data['face_login'])
+        user_profile, check_in = find_matches_image_between_user(self.basename, request.data['face_login'],
+                                                                 self.request.POST['plate'])
 
         if check_in == "Can't find face locations or face_encoding":
             return Response(data=check_in, status=status.HTTP_404_NOT_FOUND)
@@ -102,7 +110,8 @@ class CheckOutViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
 
     def create(self, request, *args, **kwargs):
-        user_profile, check_out = find_matches_image_between_user(self.basename, request.data['face_logout'])
+        user_profile, check_out = find_matches_image_between_user(self.basename, request.data['face_logout'],
+                                                                  self.request.POST['plate'])
 
         if check_out == "Can't find face locations or face_encoding":
             return Response(data=check_out, status=status.HTTP_404_NOT_FOUND)

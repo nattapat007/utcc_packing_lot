@@ -4,41 +4,42 @@
 {% block content %}
     <h1>Homepage</h1>
     {% if user.is_authenticated %}
-    
-        <img src="http://localhost:8000/media/{{ user.profile.image }}" class="rounded w-25" alt="...">
+
+        <img src="http://localhost:8000/media/{{ user.profile.image }}" class="rounded w-25">
         <p>Hi {{ user.profile.family_name }}!</p>
         <a href="{% url 'update' user.profile.id %}">Profile</a></p>
-        {% comment %} <p><a href="{% url 'logout' %}">Log Out</a></p> {% endcomment %}
+
+        <hr>
+        <table class="table">
+            <thead class="thead-dark">
+            <tr>
+                <th scope="col">Name</th>
+                <th scope="col">License plate</th>
+                <th scope="col">Brand</th>
+                <th scope="col">Status</th>
+                <th scope="col">Start</th>
+                <th scope="col">End</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                {% for park in parks %}
+                    <th scope="row">{{ park.motorcycle.profile.family_name }} {{ park.motorcycle.profile.last_name }}</th>
+                    <td>{{ park.motorcycle.brand }} {{ park.motorcycle.model }}</td>
+                    <td>{{ park.motorcycle.plate }}</td>
+                    <td>{{ park.get_status_display }}</td>
+                    <td>{{ park.created_at }}</td>
+                    <td>{{ park.updated_at }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
 
     {% else %}
 
         <p>You are not logged in</p>
         <p><a href="{% url 'login' %}">Log In</a> |
             <a href="{% url 'signup' %}">Sign Up</a></p>
-            
+
     {% endif %}
-    <hr>
-    <table class="table">
-    <thead class="thead-dark">
-      <tr>
-        <th scope="col">Name</th>
-        <th scope="col">License plate</th>
-        <th scope="col">Brand</th>
-        <th scope="col">Status</th>
-        <th scope="col">Time</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr>
-      {% for post in posts %}
-        <th scope="row">{{post.id}}</th>
-        <td>{{post.name}}</td>
-        <td>{{post.line}}</td>
-        <td>{{post.phone}}</td>
-        <td>{{post.address}}</td>
-      </tr>
-     {% endfor %}
-      </tr>
-    </tbody>
-  </table>
 {% endblock content %}
