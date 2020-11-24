@@ -16,7 +16,7 @@ migrate:
 mgs:
 	docker-compose exec django python manage.py makemigrations
 
-migrations-migrate: mgs migrate
+mgs-migrate: mgs migrate
 
 attach-django:
 	bash bash/attach_django.sh
