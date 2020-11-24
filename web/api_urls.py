@@ -13,5 +13,4 @@ router.register(r'checkout', CheckOutViewSet, basename='checkout')
 urlpatterns = [
 
 ]
-
 urlpatterns += router.urls

@@ -1,6 +1,7 @@
 import logging
 from datetime import datetime
 
+import base64
 import face_recognition
 import ipdb
 import numpy as np
@@ -89,11 +90,15 @@ def find_matches_image_between_user(basename, image, plate):
 
 
 class CheckInViewSet(viewsets.ModelViewSet):
-    queryset = CheckIn.objects.all()
+    queryset = CheckIn.objects.prefetch_related('park_set', 'park_set__motorcycle')
     serializer_class = CheckInSerializer
     permission_classes = (AllowAny,)
 
     def create(self, request, *args, **kwargs):
+        # base64 = request.data['face_login']
+        # image = base64.b64decode(base64)
+        # StringIO.StringIO(image)
+        ipdb.set_trace()
         user_profile, check_in = find_matches_image_between_user(self.basename, request.data['face_login'],
                                                                  self.request.POST['plate'])
 
@@ -105,7 +110,7 @@ class CheckInViewSet(viewsets.ModelViewSet):
 
 
 class CheckOutViewSet(viewsets.ModelViewSet):
-    queryset = CheckOut.objects.all()
+    queryset = CheckOut.objects.prefetch_related('park_set', 'park_set__motorcycle')
     serializer_class = CheckOutSerializer
     permission_classes = (AllowAny,)
 

@@ -14,8 +14,8 @@
             <thead class="thead-dark">
             <tr>
                 <th scope="col">Name</th>
-                <th scope="col">License plate</th>
                 <th scope="col">Brand</th>
+                <th scope="col">License plate</th>
                 <th scope="col">Status</th>
                 <th scope="col">Start</th>
                 <th scope="col">End</th>
@@ -25,7 +25,7 @@
             <tr>
                 {% for park in parks %}
                     <th scope="row">{{ park.motorcycle.profile.family_name }} {{ park.motorcycle.profile.last_name }}</th>
-                    <td>{{ park.motorcycle.brand }} {{ park.motorcycle.model }}</td>
+                    <td>{{ park.motorcycle.brand | upper }} {{ park.motorcycle.model | upper }}</td>
                     <td>{{ park.motorcycle.plate }}</td>
                     <td>{{ park.get_status_display }}</td>
                     <td>{{ park.created_at }}</td>

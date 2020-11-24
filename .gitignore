@@ -108,3 +108,4 @@ environment.env
 docker_volumes
 logs
 .terraform
+.DS_Store
