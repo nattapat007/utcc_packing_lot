@@ -1,18 +1,18 @@
+import base64
 import logging
 from datetime import datetime
+from io import BytesIO
 
-import base64
 import face_recognition
-import ipdb
 import numpy as np
 from rest_framework import viewsets, status
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 
-from web.apps.motorcycle.models import Motorcycle
 from web.apps.checkinout.models import CheckIn, CheckOut
 from web.apps.checkinout.serializers import CheckInSerializer, CheckOutSerializer
 from web.apps.commons.choices import InOutStatus
+from web.apps.motorcycle.models import Motorcycle
 from web.apps.parking.models import Park
 from web.apps.user_profile.models import UserProfile
 
@@ -31,7 +31,8 @@ def find_matches_image_between_user(basename, image, plate):
             face_recognition.face_encodings(face_recognition.load_image_file('/code/media/' + user_profile['image']),
                                             model='cnn')[0])
 
-    unknown_image = face_recognition.load_image_file(image)
+    bytes_image = BytesIO(base64.b64decode(image))
+    unknown_image = face_recognition.load_image_file(bytes_image)
     face_locations = face_recognition.face_locations(unknown_image)
     face_encodings = face_recognition.face_encodings(unknown_image)
 
@@ -95,10 +96,6 @@ class CheckInViewSet(viewsets.ModelViewSet):
     permission_classes = (AllowAny,)
 
     def create(self, request, *args, **kwargs):
-        # base64 = request.data['face_login']
-        # image = base64.b64decode(base64)
-        # StringIO.StringIO(image)
-        ipdb.set_trace()
         user_profile, check_in = find_matches_image_between_user(self.basename, request.data['face_login'],
                                                                  self.request.POST['plate'])
 
