@@ -14,7 +14,7 @@ class CheckInViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         user_profile, check_in = find_matches_image_between_user(self.basename, request.data['face_login'],
-                                                                 self.request.POST['plate'])
+                                                                 request.data['plate'])
 
         if check_in == "Can't find face locations or face_encoding":
             return Response(data=check_in, status=status.HTTP_404_NOT_FOUND)

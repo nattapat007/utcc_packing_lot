@@ -72,7 +72,8 @@ function PostCheckin() {
         method: 'POST',
         credentials: 'same-origin',
         headers: {
-            'Accept': 'text/plain;charset=UTF-8',
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
             'X-Requested-With': 'XMLHttpRequest',
             'X-CSRFToken': csrftoken,
         },
