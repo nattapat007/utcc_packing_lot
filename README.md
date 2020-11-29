@@ -3,6 +3,8 @@
 2. Django
 3. Django rest framework
 4. Postgres SQL
+5. [tmux](https://github.com/tmux/tmux) // *[Mac using brew](https://formulae.brew.sh/formula/tmux)*
+6. [tmuxinator](https://github.com/tmuxinator/tmuxinator) // *[Mac using brew](https://formulae.brew.sh/formula/tmuxinator)*
 
 ## เริ่มต้นโปรเจ็ค (ครั้งแรก)
  1. Build docker images
@@ -15,19 +17,39 @@
     ```bash
     make up
     ```
- 2. Migrate
+ 2. Attach-django
     ```bash
-    make migrate
+    make attach-django
     ```
- 3. Make migrations
+ 3. เข้าไปที่ http://localhost:8000
+ 
+ **For tmux**
+ 1. Start Server
+     ```bash
+     tmuxinator start .   
+     ```
+ 2. Stop Server
+    ```bash
+    tmuxinator stop .
+    ```
+ 
+## command อื่นๆ
+ 1. Django makemigration
     ```bash
     make mgs
     ```
- 4. Create superuser
+ 2. Django migrate
     ```bash
-    make superuser
+    make migrate
     ```
- 5. เข้าไปที่ http://localhost:8000
+ 3. makemigration and migrate
+    ```bash
+    make mgs-migrate
+    ```
+ 4. Clean all image
+    ```bash
+    make clean
+    ```
 
 ## docker-compose command ที่ใช้
 ```bash 
