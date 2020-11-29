@@ -87,8 +87,42 @@ function PostCheckin() {
         })
 }
 
+function PostCheckout() {
+    let c = document.createElement("canvas");
+    let img = document.getElementById("image"); //Add image
+    c.height = img.naturalHeight;
+    c.width = img.naturalWidth;
+    let ctx = c.getContext("2d");
+    ctx.drawImage(img, 0, 0, c.width, c.height);
+    let base64String = c.toDataURL();
+    let base64 = base64String.split(",")[1];
+    let plate_number = "7กญ1111"
+    const URL = 'http://localhost:8000/api/checkout/'
+
+    fetch(URL, {
+        method: 'POST',
+        credentials: 'same-origin',
+        headers: {
+            'Accept': 'application/json',
+            'Content-Type': 'application/json',
+            'X-Requested-With': 'XMLHttpRequest',
+            'X-CSRFToken': csrftoken,
+        },
+        body: JSON.stringify({'face_logout': base64, 'plate': plate_number}) //JavaScript object of data to POST
+    })
+        .then(response => {
+            return response.json() //Convert response to JSON
+        })
+        .then(data => {
+            console.log(data)
+        })
+}
+
 let plateButton = document.querySelector("#plate");
 plateButton.addEventListener("click", PostPlate);
 
 let checkInButton = document.querySelector("#checkin");
 checkInButton.addEventListener("click", PostCheckin);
+
+let checkOutButton = document.querySelector("#checkout");
+checkOutButton.addEventListener("click", PostCheckout);

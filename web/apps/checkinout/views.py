@@ -30,7 +30,7 @@ class CheckOutViewSet(viewsets.ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         user_profile, check_out = find_matches_image_between_user(self.basename, request.data['face_logout'],
-                                                                  self.request.POST['plate'])
+                                                                  request.data['plate'])
 
         if check_out == "Can't find face locations or face_encoding":
             return Response(data=check_out, status=status.HTTP_404_NOT_FOUND)

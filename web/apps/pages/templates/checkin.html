@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+{% load static %}
+
+<html lang="en">
+
+<head>
+    <script defer src="{% static 'js/face-api.min.js' %}"></script>
+    <script defer src="{% static 'js/checkin.js' %}"></script>
+    <script defer src="{% static 'js/download.js' %}"></script>
+    <style>
+        /* CSS comes here */
+
+        #video {
+            border: 1px solid black;
+        }
+
+        #photo {
+            border: 1px solid black;
+            width: 320px;
+            height: 240px;
+        }
+
+        canvas {
+            position: absolute;
+        }
+
+        .camera {
+            width: 340px;
+            display: inline-block;
+        }
+
+        .output {
+            width: 340px;
+            display: inline-block;
+        }
+
+        .contentarea {
+            font-size: 16px;
+            font-family: Arial;
+            text-align: center;
+        }
+
+        .flex-container {
+            margin: 0;
+            padding: 0;
+            /* width: 100vw;
+            height: 100vh; */
+            display: flex;
+            /* justify-content: center; */
+        }
+    </style>
+
+    <title>Test Select Camera</title>
+
+</head>
+
+<body>
+<h1>Test Select Camera</h1>
+<div id="container">
+
+    <div class="select">
+        <label for="videoSource">Video source: </label><select id="videoSource"></select>
+    </div>
+
+    <!-- <video autoplay muted playsinline></video> -->
+    <div class="flex-container" id="canvas">
+        <video id="video" width="320" height="240" autoplay muted></video>
+        <canvas id="canvas"></canvas>
+    </div>
+    <div>
+        <button id="startbutton">Take photo</button>
+    </div>
+
+    <div class="output">
+        <img id="photo" alt="The screen capture will appear in this box.">
+    </div>
+
+    <script>
+        Promise.all([
+            faceapi.nets.tinyFaceDetector('{% static "models/tiny_face_detector_model-weights_manifest.json" %}'),
+            faceapi.nets.faceLandmark68Net('{% static "models/face_landmark_68_tiny_model-weights_manifest.json" %}'),
+            faceapi.nets.faceRecognitionNet('{% static "models/face_recognition_model-weights_manifest.json" %}'),
+            faceapi.nets.faceExpressionNet('{% static "models/face_expression_model-weights_manifest.json" %}')
+        ]).then(navigator.mediaDevices.enumerateDevices().then(gotDevices))
+    </script>
+</body>
+
+</html>
