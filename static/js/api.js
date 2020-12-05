@@ -65,7 +65,7 @@ function PostCheckin() {
     ctx.drawImage(img, 0, 0, c.width, c.height);
     let base64String = c.toDataURL();
     let base64 = base64String.split(",")[1];
-    let plate_number = "7กญ1111"
+    let plate_number = "1ขฆคถ"
     const URL = 'http://localhost:8000/api/checkin/'
 
     fetch(URL, {
@@ -96,7 +96,7 @@ function PostCheckout() {
     ctx.drawImage(img, 0, 0, c.width, c.height);
     let base64String = c.toDataURL();
     let base64 = base64String.split(",")[1];
-    let plate_number = "7กญ1111"
+    let plate_number = "1ขฆคถ"
     const URL = 'http://localhost:8000/api/checkout/'
 
     fetch(URL, {
