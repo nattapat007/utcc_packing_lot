@@ -13,20 +13,21 @@
 <header>
     <!-- Fixed navbar -->
     <div class="d-flex flex-column flex-md-row align-items-center p-3 px-md-4 mb-3 bg-white border-bottom shadow-sm">
-        <a href="{% url 'home' %}" class="navbar-brand my-0 mr-md-auto font-weight-normal">U-Park</a>
+        <a href="{% url 'home:home' %}" class="navbar-brand my-0 mr-md-auto font-weight-normal">U-Park</a>
         <nav class="my-2 my-md-0 mr-md-3">
             {#            <a class="p-2 text-dark" href="#">About</a>#}
             {% if user.is_authenticated %}
 
                 <div class="container">
                 {% if user.is_superuser %}
-                    <a class="p-2 text-dark" href="{% url 'user_verify' %}">Verify</a>
+                    <a class="p-2 text-dark" href="{% url 'user_profile:user_verify' %}">Verify</a>
                 {% endif %}
-                <a class="p-2 text-dark" href="{% url 'logout' %}">Log Out</a>
+                </div>
+                <a class="p-2 text-dark" href="{% url 'user_profile:logout' %}">Log Out</a>
             {% else %}
-                <a class="p-2 text-dark" href="{% url 'login' %}">Log In</a>
+                <a class="p-2 text-dark" href="{% url 'user_profile:login' %}">Log In</a>
                 <a class="btn btn-outline-primary"
-                   href="{% url 'signup' %}">Sign Up</a>
+                   href="{% url 'user_profile:signup' %}">Sign Up</a>
             {% endif %}
         </nav>
     </div>

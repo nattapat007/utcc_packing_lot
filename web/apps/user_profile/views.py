@@ -14,7 +14,7 @@ from web.apps.motorcycle.models import Motorcycle, Brand, Model
 
 class SignupPageView(generic.CreateView):
     form_class = UserProfileCreationForm
-    success_url = reverse_lazy("login")
+    success_url = reverse_lazy("user_profile:login")
     template_name = "signup.html"
 
     def post(self, request, *args, **kwargs):
@@ -56,7 +56,7 @@ class SignupPageView(generic.CreateView):
 
 class LoginPageView(TemplateView, BaseFormView):
     template_name = "login.html"
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('home:home')
     form_class = LoginForm
 
     def form_valid(self, form):
@@ -66,7 +66,7 @@ class LoginPageView(TemplateView, BaseFormView):
 
 class UserProfileUpdateView(generic.UpdateView):
     model = UserProfile
-    success_url = reverse_lazy("home")
+    success_url = reverse_lazy("home:home")
     template_name = "edit_profile.html"
     form_class = UserProfileUpdateForm
 
@@ -84,7 +84,7 @@ class UserProfileUpdateView(generic.UpdateView):
 
 def logout_view(request):
     logout(request)
-    response = redirect(reverse_lazy('login'))
+    response = redirect(reverse_lazy('user_profile:login'))
     return response
 
 

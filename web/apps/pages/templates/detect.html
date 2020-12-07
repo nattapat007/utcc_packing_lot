@@ -1,104 +1,119 @@
 <!DOCTYPE html>
+{% load crispy_forms_tags %}
 {% load static %}
-<html lang="en">
+{% block content %}
+    <html lang="en">
 
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Detect Page</title>
-    <link rel="stylesheet"
-          href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css"
-          integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw=="
-          crossorigin="anonymous"/>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
-          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
-    <link rel="preconnect" href="https://fonts.gstatic.com">
-    <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@400;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Athiti', sans-serif;
-        }
-    </style>
-</head>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Detect Page</title>
+        <link rel="stylesheet"
+              href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.css"
+              integrity="sha512-bYPO5jmStZ9WI2602V2zaivdAnbAhtfzmxnEGh9RwtlI00I9s8ulGe4oBa5XxiC6tCITJH/QG70jswBhbLkxPw=="
+              crossorigin="anonymous"/>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+              integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2"
+              crossorigin="anonymous">
+        <link rel="preconnect" href="https://fonts.gstatic.com">
+        <link href="https://fonts.googleapis.com/css2?family=Athiti:wght@400;700&display=swap" rel="stylesheet">
+        <style>
+            body {
+                font-family: 'Athiti', sans-serif;
+            }
+        </style>
+    </head>
 
-<body>
-{% csrf_token %}
-<div class="container">
-    <div>
-        <img class="m-3 w-25" src="{% static "images/image0.jpg" %}" id="image">
-        <img class="m-3 w-25" src="{% static "images/lpn_1.jpg" %}" id="image_plate">
-    </div>
-    <div>
-        <p id="response"></p>
-    </div>
-    <div>
-        <button id="plate" class="btn btn-primary m-3">Plate</button>
-        <button id="checkin" class="btn btn-primary m-3">Checkin</button>
-        <button id="checkout" class="btn btn-primary m-3">Checkout</button>
-    </div>
-</div>
-
-<div class="container mt-5 mb-5" style="width: 20%;">
-    <div class=" card">
-        <div class="card-body">
-            <h2 class="card-title">ออกรายงาน</h2>
-            <form>
-                <div class="form-group">
-                    <label for="">จาก</label>
-                    <input type="text" id="pickerStart" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label for="">ถึง</label>
-                    <input type="text" id="pickerEnd" class="form-control">
-                </div>
-                <button id="submitReport" class="btn btn-primary">ส่งออก</button>
-                <span id="spanDate"></span>
-            </form>
+    <body>
+{#    {% csrf_token %}#}
+    <div class="container">
+        <div>
+            <img class="m-3 w-25" src="{% static "images/image0.jpg" %}" id="image">
+            <img class="m-3 w-25" src="{% static "images/lpn_1.jpg" %}" id="image_plate">
+        </div>
+        <div>
+            <p id="response"></p>
+        </div>
+        <div>
+            <button id="plate" class="btn btn-primary m-3">Plate</button>
+            <button id="checkin" class="btn btn-primary m-3">Checkin</button>
+            <button id="checkout" class="btn btn-primary m-3">Checkout</button>
         </div>
     </div>
-</div>
 
-<script src="{% static "js/api.js" %}"></script>
-<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
-        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
-</script>
-<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-        integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
-</script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
-        integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous">
-</script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
-        integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
-        crossorigin="anonymous"></script>
-<script>
-    // jQuery.datetimepicker.setDateFormatter('moment')
-    $("#pickerStart").datetimepicker({
-        timepicker: false,
-        datepicker: true,
-        format: 'Y-m-d',
-        onShow: function (ct) {
-            this.setOptions({
-                maxDate: $('#pickerEnd').val() ? $('#pickerEnd').val() : false
-            })
-        }
-    })
-    $("#pickerEnd").datetimepicker({
-        timepicker: false,
-        datepicker: true,
-        format: 'Y-m-d',
-        onShow: function (ct) {
-            this.setOptions({
-                minDate: $('#pickerStart').val() ? $('#pickerStart').val() : false
-            })
-        }
-    })
-    $("#submitReport").click(function () {
-        var dateStart = $('#pickerStart').val()
-        var dataEnd = $('#pickerEnd').val()
-        {#document.location.href = "{% url 'report' dateStart dataEnd %}"#}
-    })
-</script>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div class="container mt-5 mb-5" style="width: 20%;">
+            <div class=" card">
+                <div class="card-body">
+                    <h2 class="card-title">ออกรายงาน</h2>
+                    <form>
+                        <div class="form-group">
+                            <label for="">จาก</label>
+                            <input type="text"
+                                   id="id_pickerStart"
+                                   class="form-control start-date-picker"
+                                   name="start_date"
+                                   required>
+                        </div>
+                        <div class="form-group">
+                            <label for="">ถึง</label>
+                            <input type="text"
+                                   id="id_pickerEnd"
+                                   class="form-control end-date-picker"
+                                   name="end_date"
+                                   required>
+                        </div>
+                        <button id="submitReport"
+                                type="submit"
+                                class="btn btn-primary">ส่งออก
+                        </button>
+                        {#                    <span id="spanDate"></span>#}
+                    </form>
+                </div>
+            </div>
+        </div>
+    </form>
+{% endblock content %}
+
+{% block js %}
+    <script src="{% static "js/api.js" %}"></script>
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+            integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+            integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.min.js"
+            integrity="sha384-w1Q4orYjBQndcko6MimVbzY0tgp4pWB4lZ7lr30WKz0vr/aWKhXdBNmNb5D92v7s" crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+            integrity="sha512-AIOTidJAcHBH2G/oZv9viEGXRqDNmfdPVPYOYKGy3fti0xIplnlgMHUGfuNRzC6FkzIo0iIxgFnr9RikFxK+sw=="
+            crossorigin="anonymous"></script>
+    <script>
+        // jQuery.datetimepicker.setDateFormatter('moment')
+        $(".start-date-picker").datetimepicker({
+            timepicker: false,
+            datepicker: true,
+            format: 'Y-m-d',
+            onShow: function (ct) {
+                this.setOptions({
+                    maxDate: $('.end-date-picker').val() ? $('.end-date-picker').val() : false
+                })
+            }
+        })
+        $(".end-date-picker").datetimepicker({
+            timepicker: false,
+            datepicker: true,
+            format: 'Y-m-d',
+            onShow: function (ct) {
+                this.setOptions({
+                    minDate: $('.start-date-picker').val() ? $('.start-date-picker').val() : false
+                })
+            }
+        })
+    </script>
+{% endblock %}
 
 </body>
 

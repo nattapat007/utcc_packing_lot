@@ -3,6 +3,8 @@ from django.urls import path
 
 from .views import SignupPageView, LoginPageView, logout_view, UserProfileUpdateView, verify_view, verify_update
 
+app_name = 'user_profile'
+
 urlpatterns = [
     path("signup/", SignupPageView.as_view(), name="signup"),
     url('login/$', LoginPageView.as_view(), name='login'),

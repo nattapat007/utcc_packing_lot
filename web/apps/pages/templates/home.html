@@ -7,7 +7,7 @@
 
         <img src="http://localhost:8000/media/{{ user.profile.image }}" class="rounded w-25">
         <p>Hi {{ user.profile.family_name }}!</p>
-        <a href="{% url 'update' user.profile.id %}">Profile</a></p>
+        <a href="{% url 'user_profile:update' user.profile.id %}">Profile</a></p>
 
         <hr>
         <table class="table">
@@ -35,13 +35,13 @@
             </tbody>
         </table>
 
-        <a href="{% url 'export_park_xls' %}">Export park</a>
+        <a href="{% url 'page:export' %}">Export</a>
 
     {% else %}
 
         <p>You are not logged in</p>
-        <p><a href="{% url 'login' %}">Log In</a> |
-            <a href="{% url 'signup' %}">Sign Up</a></p>
+        <p><a href="{% url 'user_profile:login' %}">Log In</a> |
+            <a href="{% url 'user_profile:signup' %}">Sign Up</a></p>
 
     {% endif %}
 {% endblock content %}

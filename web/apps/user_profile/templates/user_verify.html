@@ -24,7 +24,7 @@
                 <td>{{ page.brand }} {{ page.model }}</td>
                 <td>
                     {% if user.is_superuser %}
-                        <form action="{% url 'verify' page.profile.user_id %}" method="POST">
+                        <form action="{% url 'user_profile:verify' page.profile.user_id %}" method="POST">
                             {% csrf_token %}
                             <input type="submit" class="btn btn-success" name="Confirm">
                         </form>
